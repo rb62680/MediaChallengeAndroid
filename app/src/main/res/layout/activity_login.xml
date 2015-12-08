@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/username"
+        android:id="@+id/usernameTextView"
         android:layout_marginTop="27dp"
         android:layout_below="@+id/loginTextView"
         android:layout_alignParentLeft="true"
@@ -34,6 +34,6 @@
         android:text="@string/LoginButton"
         android:id="@+id/loginButton"
         android:layout_marginTop="25dp"
-        android:layout_below="@+id/username"
+        android:layout_below="@+id/usernameTextView"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
