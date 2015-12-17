@@ -15,11 +15,16 @@ public class SocketManager {
     private static SocketManager mInstance = null;
     private String serverIpAddress;
     private int serverPort;
-    public Socket socket;
-    public BufferedOutputStream bo;
+    private Socket socket;
+    private BufferedOutputStream bo;
+
+    // Here are the variables of activities that the socketmanager has to modify
+    // MainActivity
+    public Integer score;
+    public Integer idOfRoom;
 
     private SocketManager(){
-        this.serverIpAddress = "192.168.70.183";
+        this.serverIpAddress = "192.168.70.62";
         this.serverPort = 62300;
     }
 
@@ -44,12 +49,16 @@ public class SocketManager {
         return mInstance;
     }
 
-    public synchronized void sendMessage(final byte[] length, final byte opcode, final byte[] message) {
+    public synchronized void sendMessage(final byte opcode, final byte[] message) {
         Thread t = new Thread(){
             @Override
             public void run() {
+                short length = (short)message.length;
+                byte[] lengthToByteArray = new byte[2];
+                lengthToByteArray[0] = (byte) (length);
+                lengthToByteArray[1] = (byte) ((length >> 8) & 0xff);
                 try {
-                    bo.write(length);
+                    bo.write(lengthToByteArray);
                     bo.write(opcode);
                     bo.write(message);
                     bo.flush();
@@ -62,6 +71,17 @@ public class SocketManager {
         t.start();
     }
 
+    public void processMessage(byte[] message, char opcode) {
+        switch (opcode) {
+            // Set id of the room which has been affected by the server
+            case 2:
+                ByteBuffer buffer = ByteBuffer.wrap(message);
+                buffer.order(ByteOrder.LITTLE_ENDIAN);
+                this.idOfRoom = buffer.getInt();
+                break;
+        }
+    }
+
     public class ClientThread implements Runnable {
         @Override
         public void run() {
@@ -70,7 +90,7 @@ public class SocketManager {
                 socket  = new Socket(serverAddr, serverPort);
                 bo = new BufferedOutputStream(socket.getOutputStream());
             } catch (Exception e) {
-                System.out.println(e.toString());
+                e.printStackTrace();
             }
         }
     }
@@ -83,7 +103,7 @@ public class SocketManager {
             try {
                 this.reader =  new BufferedInputStream(socket.getInputStream());
             } catch (IOException e) {
-                System.out.println(e.toString());
+                e.printStackTrace();
             }
         }
 
@@ -91,6 +111,7 @@ public class SocketManager {
         public void run(){
             try {
                 while (!Thread.currentThread().isInterrupted()) {
+                    // Read the length and the opcode
                     byte[] buff = new byte[3];
                     this.reader.read(buff, 0, 3);
                     ByteBuffer byteBuffer = ByteBuffer.wrap(buff, 0, 3);
@@ -98,13 +119,13 @@ public class SocketManager {
                     short length = byteBuffer.getShort();
                     byte opcode = byteBuffer.get();
 
+                    // Read the message from the length
                     byte[] message = new byte[length];
                     this.reader.read(message, 0, length);
-                    String v = new String(message, Charset.forName("UTF-8"));
-                    System.out.println(v);
+                    processMessage(message, (char)opcode);
                 }
             } catch (IOException e) {
-                System.out.println(e.toString());
+                e.printStackTrace();
             }
         }
     }

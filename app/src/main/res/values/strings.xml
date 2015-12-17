@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">MediaChallenge</string>
     <string name="action_settings">Settings</string>
-    <string name="LoginButton">Jouer!</string>
-    <string name="LoginTextView">Nom d\'utilisateur :</string>
+    <string name="LoginButton">Play!</string>
+    <string name="LoginTextView">Username :</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="PlayButton">Play music</string>
+    <string name="StopButton">Stop music</string>
+    <string name="answerTextView">Give your answer :</string>
+    <string name="answerButton">Send your answer</string>
+    <string name="score2TextView">Your score</string>
 </resources>

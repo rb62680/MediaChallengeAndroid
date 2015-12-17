@@ -15,4 +15,78 @@
         android:id="@+id/usernameTextView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/PlayButton"
+        android:id="@+id/play"
+        android:layout_marginTop="42dp"
+        android:layout_below="@+id/usernameTextView"
+        android:layout_toLeftOf="@+id/answerTextView"
+        android:layout_toStartOf="@+id/answerTextView" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/StopButton"
+        android:id="@+id/stop"
+        android:layout_alignBottom="@+id/play"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/play" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/answerTextView"
+        android:id="@+id/answerTextView"
+        android:layout_below="@+id/stop"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="29dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/answerEditText"
+        android:layout_below="@+id/answerTextView"
+        android:layout_alignRight="@+id/answerTextView"
+        android:layout_alignEnd="@+id/answerTextView"
+        android:layout_marginTop="42dp"
+        android:layout_alignLeft="@+id/answerTextView"
+        android:layout_alignStart="@+id/answerTextView"
+        android:inputType="text" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/answerButton"
+        android:id="@+id/answerButton"
+        android:layout_below="@+id/answerEditText"
+        android:layout_toLeftOf="@+id/stop"
+        android:layout_marginTop="30dp"
+        android:layout_alignLeft="@+id/answerEditText"
+        android:layout_alignStart="@+id/answerEditText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/score2TextView"
+        android:id="@+id/score2TextView"
+        android:layout_alignTop="@+id/stop"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/scoreTextView"
+        android:layout_alignBottom="@+id/play"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
