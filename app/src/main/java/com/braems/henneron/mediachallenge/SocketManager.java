@@ -78,6 +78,7 @@ public class SocketManager {
                 ByteBuffer buffer = ByteBuffer.wrap(message);
                 buffer.order(ByteOrder.LITTLE_ENDIAN);
                 this.idOfRoom = buffer.getInt();
+                System.out.println("test");
                 break;
         }
     }
@@ -122,7 +123,8 @@ public class SocketManager {
                     // Read the message from the length
                     byte[] message = new byte[length];
                     this.reader.read(message, 0, length);
-                    processMessage(message, (char)opcode);
+                    System.out.println((char)opcode);
+                    processMessage(message, (char) opcode);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

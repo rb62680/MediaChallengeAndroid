@@ -32,9 +32,12 @@ public class MainActivity extends AppCompatActivity {
         this.username = intent.getStringExtra("EXTRA_USERNAME");
         usernameTextView.setText("Welcome " + this.username);
 
+        // Set variables from the socketmanager
+        this.idOfRoom = SocketManager.getInstance().idOfRoom;
+        System.out.println("Id de la room:" + this.idOfRoom);
 
         // Creation of mediaplayer and controllers
-        this.streamServerUrl = "http://192.168.70.62:62580";
+        this.streamServerUrl = "http://192.168.70.62:62580/"+this.idOfRoom;
 
         final Button play = (Button) findViewById(R.id.play);
         play.setOnClickListener(new View.OnClickListener() {
@@ -64,11 +67,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-        // Set variables from the socketmanager
-        this.idOfRoom = SocketManager.getInstance().idOfRoom;
-        System.out.println("Id de la room:"+this.idOfRoom);
-
     }
 
 }
