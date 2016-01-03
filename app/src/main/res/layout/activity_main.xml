@@ -48,29 +48,15 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="29dp" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/answerEditText"
-        android:layout_below="@+id/answerTextView"
-        android:layout_alignRight="@+id/answerTextView"
-        android:layout_alignEnd="@+id/answerTextView"
-        android:layout_marginTop="42dp"
-        android:layout_alignLeft="@+id/answerTextView"
-        android:layout_alignStart="@+id/answerTextView"
-        android:inputType="text" />
-
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/answerButton"
         android:id="@+id/answerButton"
-        android:layout_below="@+id/answerEditText"
-        android:layout_toLeftOf="@+id/stop"
-        android:layout_marginTop="30dp"
-        android:layout_alignLeft="@+id/answerEditText"
-        android:layout_alignStart="@+id/answerEditText" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/answerTextView"
+        android:layout_alignStart="@+id/answerTextView" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -88,5 +74,29 @@
         android:id="@+id/scoreTextView"
         android:layout_alignBottom="@+id/play"
         android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/answerEditText"
+        android:layout_above="@+id/answerButton"
+        android:layout_alignLeft="@+id/answerButton"
+        android:layout_alignStart="@+id/answerButton"
+        android:layout_alignRight="@+id/answerButton"
+        android:layout_alignEnd="@+id/answerButton"
+        android:inputType="textShortMessage" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/answerListView"
+        android:layout_below="@+id/answerTextView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/stop"
+        android:layout_alignEnd="@+id/stop"
+        android:layout_above="@+id/answerEditText"
+        android:transcriptMode="alwaysScroll"
+        android:stackFromBottom="true" />
 
 </RelativeLayout>

@@ -1,5 +1,10 @@
 package com.braems.henneron.mediachallenge;
 
+import android.content.Intent;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -17,15 +22,28 @@ public class SocketManager {
     private int serverPort;
     private Socket socket;
     private BufferedOutputStream bo;
-
-    // Here are the variables of activities that the socketmanager has to modify
-    // MainActivity
-    public Integer score;
-    public Integer idOfRoom;
+    private MainActivity mActivity;
+    private LoginActivity lActivity;
 
     private SocketManager(){
         this.serverIpAddress = "192.168.70.62";
         this.serverPort = 62300;
+    }
+
+    public void setmActivity(MainActivity mActivity) {
+        this.mActivity = mActivity;
+    }
+
+    public MainActivity getmActivity() {
+        return mActivity;
+    }
+
+    public LoginActivity getlActivity() {
+        return lActivity;
+    }
+
+    public void setlActivity(LoginActivity lActivity) {
+        this.lActivity = lActivity;
     }
 
     public void connect()
@@ -77,8 +95,31 @@ public class SocketManager {
             case 2:
                 ByteBuffer buffer = ByteBuffer.wrap(message);
                 buffer.order(ByteOrder.LITTLE_ENDIAN);
-                this.idOfRoom = buffer.getInt();
-                System.out.println("test");
+                mActivity.setIdOfRoom(buffer.getInt());
+                break;
+            // Reset song
+            case 3:
+                if(mActivity != null && mActivity.player != null)
+                {
+                    mActivity.runOnUiThread(new Runnable() {
+                        public void run() {
+                            if (mActivity.player.isPlaying()) {
+                                mActivity.player.stop();
+                                mActivity.play.setEnabled(true);
+                            }
+                        }
+                    });
+                }
+                break;
+            // Put message in chatbox from MainActivity
+            case 5:
+                String messageToString = new String(message, Charset.forName("UTF8"));
+                mActivity.getMessages().add(messageToString);
+                mActivity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        mActivity.displayMessages();
+                    }
+                });
                 break;
         }
     }
@@ -112,19 +153,20 @@ public class SocketManager {
         public void run(){
             try {
                 while (!Thread.currentThread().isInterrupted()) {
-                    // Read the length and the opcode
-                    byte[] buff = new byte[3];
-                    this.reader.read(buff, 0, 3);
-                    ByteBuffer byteBuffer = ByteBuffer.wrap(buff, 0, 3);
-                    byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
-                    short length = byteBuffer.getShort();
-                    byte opcode = byteBuffer.get();
+                    if(mActivity != null) {
+                        // Read the length and the opcode
+                        byte[] buff = new byte[3];
+                        this.reader.read(buff, 0, 3);
+                        ByteBuffer byteBuffer = ByteBuffer.wrap(buff, 0, 3);
+                        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+                        short length = byteBuffer.getShort();
+                        byte opcode = byteBuffer.get();
 
-                    // Read the message from the length
-                    byte[] message = new byte[length];
-                    this.reader.read(message, 0, length);
-                    System.out.println((char)opcode);
-                    processMessage(message, (char) opcode);
+                        // Read the message from the length
+                        byte[] message = new byte[length];
+                        this.reader.read(message, 0, length);
+                        processMessage(message, (char) opcode);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
